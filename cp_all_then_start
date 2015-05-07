@@ -1,0 +1,32 @@
+#!/usr/bin/expect
+
+set user songbingwei
+set passwd songbingwei
+set appname small-pieces
+set server 192.168.2.231
+set port 22
+
+
+set sf_dir "[exec pwd]/execute/."
+set tf "~/${appname}_temp"
+set comd  "rm -rf ${appname};mkdir ${appname};cd ${appname};cp -rf ${tf}/. .\n"
+
+
+# 登录并执行命令
+spawn scp -r $sf_dir $user@$server:$tf
+expect "password:"
+send "${passwd}\n"
+set timeout 300
+expect "$ "
+
+spawn ssh $user@$server -p $port
+expect "password:"
+send "${passwd}\n"
+expect "]$ "
+send $comd
+expect "]$ "
+send "./shell stop\n"
+expect "]$ "
+send "./shell start\n"
+expect "]$ "
+exit

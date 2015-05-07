@@ -1,0 +1,49 @@
+#/bin/sh
+eval $(git status | awk -F ' ' 'NR==1 {printf("the_branch=%s",$4)}')
+eval $(git status | awk -F ' ' 'NR==2 {printf("is_commit=%s%s%s",$1,$2,$3)}')
+eval $(git log -1 | awk -F ' ' 'NR==1 {printf("commit=%s",substr($2,1,7))}')
+eval $(pwd | awk -F '/' '{printf("project=%s",$NF)}')
+
+generate(){
+    project_name=`pwd`
+    directory="execute"
+    echo $directory
+    #=============del temp dir==========
+    rm -rf $directory
+    mkdir $directory
+    lein clean
+    lein jar
+    mkdir execute
+    cd $directory
+    echo $project"_"$the_branch"_"$commit >> ver.txt
+    mkdir lib
+    cd lib
+    #==============cp jar ==============
+    lein_classpath=`lein classpath`
+    classpath_all=(`echo -e  ${lein_classpath//:/\\\\n}`)
+    remove_patter=( ${classpath_all[@]/*$project_name*/} )
+    classpath_jars=(`echo -e ${remove_patter[@]}`)
+    for t in "${classpath_jars[@]}"
+    do
+        cp $t .
+    done
+
+    cp ../../target/*.jar .
+    #==============
+    cd ..
+    cp ../doc/shell .
+    cp ../doc/install.txt .
+    cp ../doc/create.sql .
+    #===================================
+    chmod +x shell
+    cd ..
+}
+
+if git status | grep 'nothing to commit'
+then
+    generate
+else
+      echo "==================================="
+      echo "error: please commit your change!! "
+      echo "==================================="
+fi

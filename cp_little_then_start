@@ -1,0 +1,31 @@
+#!/usr/bin/expect
+
+set user songbingwei
+set passwd songbingwei
+set server 192.168.2.231
+set port 22
+set sf_dir ~/Project/small-staff/execute/lib/
+set sf small-staff-1.0.0.jar
+set tf /home/songbingwei
+
+
+# 登录并执行命令
+spawn scp $sf_dir$sf $user@$server:$tf
+expect "password:"
+send "${passwd}\n"
+set timeout 300
+expect "$ "
+
+spawn ssh $user@$server -p $port
+expect "password:"
+send "${passwd}\n"
+expect "]$ "
+send "cd execute\n"
+expect "]$ "
+send "cp ../$sf lib/\n"
+expect "]$ "
+send "./shell stop\n"
+expect "]$ "
+send "./shell start\n"
+expect "]$ "
+exit

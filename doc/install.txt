@@ -1,0 +1,7 @@
+createdb small_pieces
+
+create table stock (id serial primary key,sid numeric(64,0) NOT NULL,factory character varying(255),brand character varying(255),name character varying(255),code character varying(255),picture_num character varying(255),amount bigint DEFAULT 0,price float DEFAULT 0.0, borrow_count bigint DEFAULT 0,created_at timestamp without time zone DEFAULT now(),updated_at timestamp without time zone)
+
+create table borrow (id serial primary key,wid numeric(64,0) NOT NULL,code character varying(255),amount bigint DEFAULT 0,borrow_count bigint DEFAULT 0,price float DEFAULT 0.0,borrow_at timestamp without time zone,apply_at timestamp without time zone,status integer DEFAULT 1,repair_num character varying(255),require_id character varying(255),username character varying(255) DEFAULT '')
+
+create table buy (id serial primary key,yid numeric(64,0) NOT NULL,code character varying(255),amount bigint DEFAULT 0,buy_count bigint DEFAULT 0,price float DEFAULT 0.0,buy_at timestamp without time zone,apply_at timestamp without time zone)
