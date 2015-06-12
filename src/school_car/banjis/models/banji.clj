@@ -11,14 +11,17 @@
   [params]
   (transaction
    (insert banjis
-           (values (assoc params :clid (uuid/gen-uuid))))))
+           (values (assoc params :clid (uuid/gen-uuid)))
+           )))
 
 (defn update!
   [params]
   (log/info params)
-  (transaction banjis
-               (set-fields (dissoc params :clid))
-               (where (select-keys params [:clid]))))
+  (transaction
+   (update banjis
+           (set-fields (dissoc params :clid))
+           (where (select-keys params [:clid])))
+))
 
 (defn delete!
   [params]

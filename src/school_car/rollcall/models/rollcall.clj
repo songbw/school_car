@@ -1,4 +1,4 @@
-(ns school-car.rollcalls.models.rollcall
+(ns school-car.rollcall.models.rollcall
   (:require [clojure.java.jdbc :as sql]
             [utils.log :as log]
             [utils.uuid :as uuid]
@@ -11,25 +11,27 @@
   [params]
   (transaction
    (insert rollcalls
-           (values (assoc params :cid (uuid/gen-uuid))))))
+           (values (assoc params :rid (uuid/gen-uuid))))))
 
 (defn update!
   [params]
   (log/info params)
-  (transaction rollcalls
-               (set-fields (dissoc params :cid))
-               (where (select-keys params [:cid]))))
+  (transaction
+   (update rollcalls
+           (set-fields (dissoc params :rid))
+           (where (select-keys params [:rid])))
+))
 
 (defn delete!
   [params]
   (delete rollcalls
-          (where (update-in params [:caid] bigdec))))
+          (where (update-in params [:rid] bigdec))))
 
 (defn find-by-id
   [params]
   (select rollcalls
           (fields :rid :stuid :stu_name :sex :age :headimg :description :status)
-          (where (update-in params [:cid] bigdec))))
+          (where (update-in params [:rid] bigdec))))
 
 (defn all-rollcall
   [o l]

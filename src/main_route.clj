@@ -9,5 +9,5 @@
 
 (defroutes core-routes
   (GET "/" [] (response {:hello "It works!"}))
-  (context "/pieces" [] school-routes)
+  (context "/school" [] school-routes)
   (route/not-found "Not Found"))

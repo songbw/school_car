@@ -24,7 +24,8 @@
   [req]
   (log/info (select-keys (:params req) student-key))
   (student/create! (select-keys (:params req) student-key))
-  (resp/response {:success true}))
+  (resp/response {:success true})
+  )
 
 (defn delete-student!
   [req]
