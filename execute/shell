@@ -1,0 +1,106 @@
+#MainMethod
+PORT=6001
+OTHER_OPTS='-Ddb_name=small_pieces -Ddb_user=songbingwei -Ddb_password=songbingwei -Ddb_host=192.168.2.231 -Ddb_port=5432 -Dsys_test=test -DREPAIR_URL=http://192.168.2.231:8181
+-server'
+APP_OPTS="-DPORT=$PORT $OTHER_OPTS"
+APP_MAINCLASS=server.server
+
+# ===================================================
+APP_HOME=`dirname $0`
+CLASSPATH=$APP_HOME/
+psid=0
+jar_path=
+#===================================================
+
+checkpid() {
+  javaps=`jps -vl | grep $APP_MAINCLASS | grep PORT=$PORT`
+
+  if [ -n "$javaps" ]; then
+      psid=`echo $javaps | awk '{print $1}'`
+  else
+      psid=0
+  fi
+}
+
+
+
+start() {
+  checkpid
+
+  if [ $psid -ne 0 ]; then
+      echo "================================"
+      echo "warn: $APP_MAINCLASS already started! (pid=$psid)"
+      echo "================================"
+  else
+      echo -n "Starting $APP_MAINCLASS ..."
+
+ cd $APP_HOME
+
+ for i in lib/*.jar
+    do
+       jar_path="$i:$jar_path"
+    done
+
+      java $APP_OPTS -cp .:$jar_path $APP_MAINCLASS &
+      checkpid
+      if [ $psid -ne 0 ]; then
+        echo "(pid=$psid) [OK]"
+      else
+        echo "[Failed]"
+      fi
+  fi
+}
+
+
+stop() {
+  checkpid
+
+  if [ $psid -ne 0 ]; then
+      echo -n "Stopping $APP_MAINCLASS ...(pid=$psid) "
+      kill -9 $psid
+      if [ $? -eq 0 ]; then
+        echo "[OK]"
+      else
+        echo "[Failed]"
+      fi
+
+      checkpid
+      if [ $psid -ne 0 ]; then
+        stop
+      fi
+  else
+      echo "================================"
+      echo "warn: $APP_MAINCLASS is not running"
+      echo "================================"
+  fi
+}
+
+
+
+
+
+
+
+case "$1" in
+start)
+      start
+
+;;
+stop)
+    stop
+;;
+restart)
+    stop
+    start
+    ;;
+status)
+      status
+;;
+info)
+      info
+ ;;
+*)
+      echo "Usage: $0 {start|stop|restart|status|info}"
+      exit 1
+esac
+exit 0
