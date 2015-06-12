@@ -33,6 +33,6 @@
        (log/info "import data success, please modify config file and restart system")
        (System/exit 0))
     (let [port (Integer/parseInt (get (System/getenv) "PORT" "6001"))]
-      (log/info "POST IS " port)
+      (log/info "POST IS " (get (System/getenv) "PORT"))
       (start port)))
   )
