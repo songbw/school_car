@@ -1,5 +1,5 @@
 #MainMethod
-PORT=6001
+PORT=6080
 OTHER_OPTS='-Ddb_name=small_pieces -Ddb_user=songbingwei -Ddb_password=songbingwei -Ddb_host=192.168.2.231 -Ddb_port=5432 -Dsys_test=test -DREPAIR_URL=http://192.168.2.231:8181
 -server'
 APP_OPTS="-DPORT=$PORT $OTHER_OPTS"

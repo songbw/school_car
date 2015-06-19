@@ -2,7 +2,8 @@
   (:require [clojure.string :as str]
             [ring.util.response :as resp]
             [cheshire.core :as json]
-            )
+            [clj-http.client :as client]
+            [taoensso.carmine :as car :refer (wcar)])
   (:require [school-car.weixin.models.weixin :as weixin]
             [utils.web :as web]
             [utils.common :as common]
@@ -11,11 +12,40 @@
         [utils.web])
   (:import java.security.MessageDigest))
 
+(defn http-get
+  [url params]
+  (let [resp (client/get url
+                         {:query-params params})]
+    resp))
+
+(def server1-conn {:pool {} :spec {:host (common/getParam "redis_host" "127.0.0.1") :port 6379}})
+(defmacro wcar*
+  [& body]
+  `(car/wcar server1-conn ~@body))
+
+(defn write-token
+  []
+  (let [token (http-get "https://api.weixiin.qq.com/cgi-bin/token" {:grant_type "client_credential" :appid "wx40faaf90491d548c" :secret "8a16ad8803263f31e684eca15bad6241"})]
+    (log/info token)
+    (if-let [access_token (:access_token token)]
+      (wcar* (car/ping) (car/setex "token" (:expires_in token) access_token)))
+    (:access_token token)))
+
+(defn read-token
+  []
+  (if-let [token (wcar* (car/ping) (car/get "token"))]
+    token
+    (write-token)))
+
+(defn login-weixin
+  [req]
+  (resp/response (write-token)))
+
 (def sign-key [:signature :timestamp :nonce :echostr])
 
 (defn check-signature
   [req]
   (log/info (:params req))
   (log/info (select-keys (:params req) sign-key))
-  (resp/response (select-keys (:params req) [:echostr]))
+  (resp/response (:echostr (:params req)))
   )
