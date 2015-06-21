@@ -2,6 +2,7 @@
   (:require [compojure.handler :as handler]
             [ring.adapter.jetty :as jetty]
             [ring.middleware.json :as middleware]
+            [imintel.ring.xml :as imintel]
             [utils.web :as web]
             [utils.log :as log]
             [utils.common :as common]
@@ -19,6 +20,8 @@
       (middleware/wrap-json-body)
       (middleware/wrap-json-response)
       (middleware/wrap-json-params)
+      ;; (imintel/wrap-xml-request)
+      ;; (imintel/wrap-xml-response)
       (web/log-request-response)
       (web/wrap-request-header)
       ))

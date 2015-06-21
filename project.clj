@@ -9,6 +9,7 @@
                  [compojure "1.3.3"]
                  [ring/ring-jetty-adapter "1.3.2"]
                  [ring/ring-json "0.3.1"]
+                 [imintel/ring-xml "0.0.2"]
                  [org.clojure/java.jdbc "0.3.6"]
                  [lobos "1.0.0-beta3"]
                  [postgresql "9.3-1102.jdbc41"]

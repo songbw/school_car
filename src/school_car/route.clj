@@ -13,4 +13,7 @@
   (POST "/student" [] students/add-student!)
   (PUT "/student" [] students/modify-student!)
   (DELETE "/student" [] students/delete-student!)
-  (GET "/weixin" [] weixins/check-signature))
+  (GET "/login" [] weixins/login-weixin)
+  (GET "/weixin" [] weixins/check-signature)
+  (POST "/weixin" [] weixins/post-signature)
+  )
