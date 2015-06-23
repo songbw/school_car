@@ -55,25 +55,44 @@
   (resp/response (:echostr (:params req)))
   )
 
-(defn escape-xml
-  [text]
- ;; (log/info "escape - xml -------------> " text)
-  (clojure.string/replace text #"&lt;|&gt;" {"&lt;" "<" "&gt;" ">"}))
+(def xml-data [{:tag :xml, :attrs nil, :content [{:tag :ToUserName, :attrs nil, :content ["gh_6db043859c65"]} {:tag :FromUserName, :attrs nil, :content ["o58lCtx6refDawv5fCe6uzbzj_Js"]} {:tag :CreateTime, :attrs nil, :content ["1434896687"]} {:tag :MsgType, :attrs nil, :content ["text"]} {:tag :Content, :attrs nil, :content ["呜呜呜"]} {:tag :MsgId, :attrs nil, :content ["6162834344014993564"]}]} nil])
 
-(defn- parse-aotuid
-  [post-wlmq node]
-  (let [body (get post-wlmq :body)
-        escapebody (str (escape-xml body))
-        xml-file (pxml/parse (java.io.ByteArrayInputStream. (.getBytes escapebody)))]
-    (first (for [x (xml-seq xml-file)
-                 :when (= node (:tag x))]
-             [(keyword node) (first (:content x))]))))
+(def xml-tag [:ToUserName :FromUserName :CreateTime :MsgType :Content :MsgId])
+
+;;xml file convert to key and value
+(defn xml2key-value
+  [xml-data tag]
+  (first (for [x xml-data
+               :when (= tag (:tag x))]
+           [(keyword tag) (first (:content x))])))
+
+;;xml convert to json
+(defn xml2json
+  [xml-data xml-tag]
+  (into {}
+        (map xml2key-value
+             (into []
+                   (repeat 9 (:content (first xml-data))))
+             xml-tag)))
+
+;; xml to json
+(defn x2j
+  [xml-data]
+  (let [contents (-> xml-data first :content)]
+    (reduce
+      (fn [result {:keys [tag content]}]
+        (assoc result tag (first content)))
+      {} contents)))
+
+(def text-temple "<xml><ToUserName>%s</ToUserName><FromUserName>%s</FromUserName><CreateTime>%s</CreateTime><MsgType>text</MsgType><Content>%s</Content></xml>")
 
 (defn post-signature
   [req]
   (log/info "post msg is *********   " req)
   (let [body (:body req)
-       ;; escapebody (str (escape-xml body))
         zip-file (pzip/xml-zip (pxml/parse (input-stream body)))
-        ]
-    (log/info "body is ****** " body  "\n xml-file is " zip-file)))
+        body-json (x2j zip-file)]
+    (log/info "body is ****** " body  "\n xml-file is " zip-file "\n body-json is " body-json "\n")
+
+    (resp/content-type (resp/response (format text-temple (:FromUserName body-json) (:ToUserName body-json) (:CreateTime body-json) (:Content body-json))) "application/xml; charset=utf-8")
+    ))
