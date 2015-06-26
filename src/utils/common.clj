@@ -1,5 +1,8 @@
 (ns utils.common
-  (:require [clojure-csv.core :as csv]))
+  (:require [clojure-csv.core :as csv]
+                        [clj-http.client :as client]
+                        [utils.log :as log]
+                        [cheshire.core :as json]))
 
 (defn getParam
   [param default]
@@ -106,3 +109,19 @@
   [fname]
   (map csv/parse-csv
        (line-seq (clojure.java.io/reader fname))))
+
+(defn http-get
+  [url params]
+  (let [resp (client/get url
+                         {:query-params params :debug true})]
+    resp))
+
+(defn http-post
+  [url body]
+  (log/info "body : " body)
+  (let [resp (client/post url
+                          {:content-type :json
+                           :body (json/generate-string body)
+                          ;; :headers headers
+                           })]
+    resp))

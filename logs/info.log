@@ -390,3 +390,32 @@ response ->
 [2015-06-22 17:28:08,729] INFO  -->> MLog clients using log4j logging.
 [2015-06-22 17:38:08,246] INFO  -->> MLog clients using log4j logging.
 [2015-06-22 17:41:04,795] INFO  -->> MLog clients using log4j logging.
+[2015-06-23 10:40:21,204] INFO  -->> MLog clients using log4j logging.
+[2015-06-23 10:43:36,172] INFO  -->> MLog clients using log4j logging.
+[2015-06-23 10:59:36,632] INFO  -->> MLog clients using log4j logging.
+[2015-06-23 11:02:55,207] INFO  -->> MLog clients using log4j logging.
+[2015-06-23 13:38:57,178] INFO  -->> MLog clients using log4j logging.
+[2015-06-23 13:42:23,561] INFO  -->> MLog clients using log4j logging.
+[2015-06-23 14:05:10,846] INFO  -->> MLog clients using log4j logging.
+[2015-06-23 14:19:56,021] INFO  -->> MLog clients using log4j logging.
+[2015-06-23 14:22:45,217] INFO  -->> MLog clients using log4j logging.
+[2015-06-23 14:42:58,362] INFO  -->> MLog clients using log4j logging.
+[2015-06-23 14:43:28,844] INFO  -->> ["PONG" nil]
+[2015-06-23 14:49:26,377] INFO  -->> MLog clients using log4j logging.
+[2015-06-23 14:50:47,604] INFO  -->> ["PONG" nil]
+[2015-06-23 14:50:58,447] INFO  -->> ["PONG" "token1"]
+[2015-06-23 14:52:04,347] INFO  -->> ["PONG" "token1"]
+[2015-06-23 14:54:43,536] INFO  -->> MLog clients using log4j logging.
+[2015-06-23 14:57:33,033] INFO  -->> MLog clients using log4j logging.
+[2015-06-23 15:35:14,292] INFO  -->> MLog clients using log4j logging.
+[2015-06-23 15:37:57,779] INFO  -->> MLog clients using log4j logging.
+[2015-06-23 15:40:47,057] INFO  -->> MLog clients using log4j logging.
+[2015-06-23 15:57:38,009] INFO  -->> MLog clients using log4j logging.
+[2015-06-23 16:00:33,193] INFO  -->> MLog clients using log4j logging.
+[2015-06-24 15:04:43,507] INFO  -->> MLog clients using log4j logging.
+[2015-06-24 15:15:03,802] INFO  -->> MLog clients using log4j logging.
+[2015-06-24 16:38:49,337] INFO  -->> MLog clients using log4j logging.
+[2015-06-24 16:39:40,551] INFO  -->> MLog clients using log4j logging.
+[2015-06-24 16:44:53,782] INFO  -->> MLog clients using log4j logging.
+[2015-06-24 17:08:39,638] INFO  -->> MLog clients using log4j logging.
+[2015-06-24 17:13:14,254] INFO  -->> MLog clients using log4j logging.

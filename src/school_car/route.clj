@@ -16,4 +16,6 @@
   (GET "/login" [] weixins/login-weixin)
   (GET "/weixin" [] weixins/check-signature)
   (POST "/weixin" [] weixins/post-signature)
+  (GET "/weixin/menu" [] weixins/add-menu)
+  (GET "/weixin/read" [] weixins/read-token)
   )
